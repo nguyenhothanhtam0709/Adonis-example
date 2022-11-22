@@ -9,7 +9,8 @@
     "lint": "eslint . --ext=.ts",
     "format": "prettier --write .",
     "swagger:generate": "node ace swagger:generate",
-    "postbuild": "yarn swagger:generate && cpy swagger build/"
+    "postbuild": "yarn swagger:generate && cpy swagger build/",
+    "migrate:run": "node ace migration:run"
   },
   "eslintConfig": {
     "extends": [
