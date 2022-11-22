@@ -1,0 +1,119 @@
+/api/auth/register:
+  post:
+    tags:
+      - Auth
+    security: []
+    description: Register
+    requestBody:
+      required: true
+      content:
+        application/json:
+          description: User payload
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                example: 'thanhtam@gmail.com'
+                required: true
+              password:
+                type: string
+                example: 'thanhtam123'
+                required: true
+    produces:
+      - application/json
+    responses:
+      200:
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  example: 'bearer'
+                token:
+                  type: string
+                expires_at:
+                  type: string
+                  format: date-time
+
+/api/auth/login:
+  post:
+    tags:
+      - Auth
+    security: []
+    description: Login
+    requestBody:
+      required: true
+      content:
+        application/json:
+          description: User payload
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                example: 'thanhtam@gmail.com'
+                required: true
+              password:
+                type: string
+                example: 'thanhtam123'
+                required: true
+    produces:
+      - application/json
+    responses:
+      200:
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  example: 'bearer'
+                token:
+                  type: string
+                expires_at:
+                  type: string
+                  format: date-time
+
+/api/auth/profile:
+  get:
+    tags:
+      - Auth
+    security:
+      - bearerAuth: []
+    description: Get Profile
+    produces:
+      - application/json
+    responses:
+      200:
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+
+/api/auth/logout:
+  post:
+    tags:
+      - Auth
+    security:
+      - bearerAuth: []
+    description: Logout
+    produces:
+      - application/json
+    responses:
+      200:
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                revoke:
+                  type: boolean
+                  example: true
