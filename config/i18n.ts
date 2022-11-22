@@ -97,7 +97,7 @@ const i18nConfig: I18nConfig = {
     },
   },
   fallbackLocales: {
-    ca: 'vi',
+    ca: 'en',
   },
 };
 

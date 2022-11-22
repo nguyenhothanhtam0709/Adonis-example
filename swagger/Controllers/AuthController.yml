@@ -4,6 +4,15 @@
       - Auth
     security: []
     description: Register
+    parameters:
+      - in: query
+        name: lang
+        schema:
+          type: string
+          enum:
+            - vi
+            - en
+            - ja
     requestBody:
       required: true
       content:
@@ -45,6 +54,15 @@
       - Auth
     security: []
     description: Login
+    parameters:
+      - in: query
+        name: lang
+        schema:
+          type: string
+          enum:
+            - vi
+            - en
+            - ja
     requestBody:
       required: true
       content:
@@ -87,6 +105,15 @@
     security:
       - bearerAuth: []
     description: Get Profile
+    parameters:
+      - in: query
+        name: lang
+        schema:
+          type: string
+          enum:
+            - vi
+            - en
+            - ja
     produces:
       - application/json
     responses:
@@ -104,6 +131,15 @@
     security:
       - bearerAuth: []
     description: Logout
+    parameters:
+      - in: query
+        name: lang
+        schema:
+          type: string
+          enum:
+            - vi
+            - en
+            - ja
     produces:
       - application/json
     responses:
@@ -114,6 +150,5 @@
             schema:
               type: object
               properties:
-                revoke:
-                  type: boolean
-                  example: true
+                message:
+                  type: string

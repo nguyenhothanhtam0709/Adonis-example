@@ -34,14 +34,16 @@ export default class AuthController {
     return token.toJSON();
   }
 
-  async logout({ auth }: HttpContextContract) {
+  async logout({ auth, i18n }: HttpContextContract) {
     await auth.use('api').revoke();
+    const message = i18n.formatMessage('auth.logout.successful');
+
     return {
-      revoke: true,
+      message,
     };
   }
 
-  async profile({ auth, logger, i18n }: HttpContextContract) {
+  async profile({ auth, logger }: HttpContextContract) {
     logger.info(`User ${auth?.user?.id} get profile`);
     logger.info(auth.user?.toJSON() as any);
     return auth.user?.toJSON();
