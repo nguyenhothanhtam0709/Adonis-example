@@ -1,15 +1,16 @@
 components:
   schemas:
-    User:
+    PaginateMeta:
       type: object
       properties:
         id:
           type: number
-        email:
+        name:
           type: string
-          format: email
-        remember_me_token:
+        key:
           type: string
+        parent_id:
+          type: number
           nullable: true
         created_at:
           type: string

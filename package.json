@@ -10,7 +10,8 @@
     "format": "prettier --write .",
     "swagger:generate": "node ace swagger:generate",
     "postbuild": "yarn swagger:generate && cpy swagger build/",
-    "migrate:run": "node ace migration:run"
+    "migrate:run": "node ace migration:run",
+    "migrate:rollback": "node ace migration:rollback"
   },
   "eslintConfig": {
     "extends": [

@@ -1,0 +1,119 @@
+/api/hash-tags:
+  get:
+    tags:
+      - Hash Tags
+    description: Retrieve Hash Tags
+    parameters:
+      - in: query
+        name: lang
+        schema:
+          type: string
+          enum:
+            - vi
+            - en
+            - ja
+      - in: query
+        name: pageSize
+        schema:
+          type: number
+      - in: query
+        name: pageIndex
+        schema:
+          type: number
+    produces:
+      - application/json
+    responses:
+      200:
+        description: Success
+        content:
+          application/json:
+            description: Query posts result
+            schema:
+              type: object
+              properties:
+                meta:
+                  $ref: '#/components/schemas/HashTag'
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Post'
+  post:
+    tags:
+      - Hash Tags
+    security:
+      - bearerAuth: []
+    description: Create hash tag
+    parameters:
+      - in: query
+        name: lang
+        schema:
+          type: string
+          enum:
+            - vi
+            - en
+            - ja
+    requestBody:
+      required: true
+      content:
+        application/json:
+          description: User payload
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: 'Hashtag 1'
+                required: true
+              key:
+                type: string
+                example: 'hashtag1'
+                required: true
+              parentId:
+                type: number
+    produces:
+      - application/json
+    responses:
+      200:
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+
+/api/hash-tags/{id}:
+  delete:
+    tags:
+      - Hash Tags
+    security:
+      - bearerAuth: []
+    description: Delete Hash Tag By Id
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+        description: Numeric ID of the hashtag
+      - in: query
+        name: lang
+        schema:
+          type: string
+          enum:
+            - vi
+            - en
+            - ja
+    produces:
+      - application/json
+    responses:
+      200:
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean

@@ -1,14 +1,19 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 import User from 'App/Models/User';
-import LoginValidator from 'App/Validators/LoginValidator';
-import RegisterValidator from 'App/Validators/RegisterValidator';
+import LoginValidator from 'App/Validators/Auth/LoginValidator';
+import RegisterValidator from 'App/Validators/Auth/RegisterValidator';
 import Env from '@ioc:Adonis/Core/Env';
 // import Redis from '@ioc:Adonis/Addons/Redis';
 import Bull from '@ioc:Rocketseat/Bull';
 import Job from 'App/Jobs/NewUserRegisterTracking';
+// import Database from '@ioc:Adonis/Lucid/Database';
 
 export default class AuthController {
   async login({ request, auth }: HttpContextContract) {
+    // const count = await Database.query().from('users').getCount();
+    // const count = await User.query().getCount();
+    // return count;
+
     const validated = await request.validate(LoginValidator);
 
     /**

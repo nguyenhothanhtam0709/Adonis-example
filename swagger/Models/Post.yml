@@ -1,16 +1,17 @@
 components:
   schemas:
-    User:
+    Post:
       type: object
       properties:
         id:
           type: number
-        email:
+        title:
           type: string
-          format: email
-        remember_me_token:
+        content:
           type: string
           nullable: true
+        userId:
+          type: number
         created_at:
           type: string
           format: date-time

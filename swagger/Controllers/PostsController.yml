@@ -1,0 +1,217 @@
+/api/posts:
+  get:
+    tags:
+      - Posts
+    security:
+      - bearerAuth: []
+    description: Retrieve Posts
+    parameters:
+      - in: query
+        name: lang
+        schema:
+          type: string
+          enum:
+            - vi
+            - en
+            - ja
+      - in: query
+        name: title
+        schema:
+          type: string
+      - in: query
+        name: userId
+        schema:
+          type: number
+      - in: query
+        name: pageSize
+        schema:
+          type: number
+      - in: query
+        name: pageIndex
+        schema:
+          type: number
+    produces:
+      - application/json
+    responses:
+      200:
+        description: Success
+        content:
+          application/json:
+            description: Query posts result
+            schema:
+              type: object
+              properties:
+                meta:
+                  $ref: '#/components/schemas/HashTag'
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                      title:
+                        type: string
+                      content:
+                        type: string
+                        nullable: true
+                      userId:
+                        type: number
+                      user:
+                        type: object
+                        properties:
+                          id:
+                            type: number
+                          email:
+                            type: string
+                            format: email
+  post:
+    tags:
+      - Posts
+    security:
+      - bearerAuth: []
+    description: Create Post
+    parameters:
+      - in: query
+        name: lang
+        schema:
+          type: string
+          enum:
+            - vi
+            - en
+            - ja
+    requestBody:
+      required: true
+      content:
+        application/json:
+          description: User payload
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                example: 'example title'
+                required: true
+              content:
+                type: string
+    produces:
+      - application/json
+    responses:
+      200:
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Post'
+
+/api/posts/{id}:
+  get:
+    tags:
+      - Posts
+    security:
+      - bearerAuth: []
+    description: Get Post By Id
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+        description: Numeric ID of the post
+      - in: query
+        name: lang
+        schema:
+          type: string
+          enum:
+            - vi
+            - en
+            - ja
+    produces:
+      - application/json
+    responses:
+      200:
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Post'
+  put:
+    tags:
+      - Posts
+    security:
+      - bearerAuth: []
+    description: Update Post By Id
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+        description: Numeric ID of the post
+      - in: query
+        name: lang
+        schema:
+          type: string
+          enum:
+            - vi
+            - en
+            - ja
+    requestBody:
+      required: true
+      content:
+        application/json:
+          description: User payload
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                example: 'example title'
+                required: true
+              content:
+                type: string
+    produces:
+      - application/json
+    responses:
+      200:
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+  delete:
+    tags:
+      - Posts
+    security:
+      - bearerAuth: []
+    description: Delete Post By Id
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+        description: Numeric ID of the post
+      - in: query
+        name: lang
+        schema:
+          type: string
+          enum:
+            - vi
+            - en
+            - ja
+    produces:
+      - application/json
+    responses:
+      200:
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean

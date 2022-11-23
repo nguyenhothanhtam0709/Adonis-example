@@ -34,4 +34,22 @@ Route.group(() => {
       Route.get('profile', 'AuthController.profile');
     }).middleware('auth:api');
   }).prefix('auth');
+
+  Route.resource('posts', 'PostsController')
+    .apiOnly()
+    .middleware({
+      '*': ['auth:api'],
+    });
+
+  Route.group(() => {
+    Route.get('my-posts', 'FeedsController.myPosts').middleware(['auth:api']);
+  }).prefix('feeds');
+
+  Route.group(() => {
+    Route.get('', 'HashTagsController.index');
+    Route.group(() => {
+      Route.post('', 'HashTagsController.store');
+      Route.delete(':id', 'HashTagsController.delete');
+    }).middleware(['auth:api']);
+  }).prefix('hash-tags');
 }).prefix('api');
