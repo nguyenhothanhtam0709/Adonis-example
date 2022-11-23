@@ -20,7 +20,7 @@ export default class extends BaseSchema {
       /**
        *
        */
-      table.unique('key');
+      table.unique(['key']);
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
