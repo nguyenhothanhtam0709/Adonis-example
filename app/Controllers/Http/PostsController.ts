@@ -5,6 +5,7 @@ import UpdatePostsValidator from 'App/Validators/Posts/UpdatePostValidator';
 import { Exception } from '@adonisjs/core/build/standalone';
 import QueryPostsValidator from 'App/Validators/Posts/QueryPostValidator';
 import { DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE } from 'App/Constants/Paginate';
+import Database, { TransactionClientContract } from '@ioc:Adonis/Lucid/Database';
 
 export default class PostsController {
   async index({ request }: HttpContextContract) {
@@ -24,23 +25,48 @@ export default class PostsController {
     const queryResult = await query
       .select(['id', 'title', 'content', 'userId'])
       .preload('user', (builder) => builder.select(['id', 'email']))
+      .preload('hashTags', (builder) => builder.select(['id', 'name', 'key']))
       .paginate(pageIndex!, pageSize!);
     return queryResult.toJSON();
   }
 
-  show({ params }: HttpContextContract) {
+  async show({ params }: HttpContextContract) {
     const id = params.id as number;
-    return this.findById(id);
+    const post = await this.findById(id);
+    await post.load((loader) => {
+      loader.load('hashTags', (builder) => builder.select(['id', 'name', 'key']));
+    });
+    return post;
   }
 
   async store({ request, auth }: HttpContextContract) {
-    const validatedData = await request.validate(CreatePostsValidator);
+    const { title, content, hashTagIds } = await request.validate(CreatePostsValidator);
     const userId = auth?.user?.id as any;
-    const newPost = await Post.create({
-      ...validatedData,
-      userId,
-    });
-    return newPost;
+    const post = await Database.transaction(
+      async (trx: TransactionClientContract) => {
+        const post = await Post.create(
+          {
+            title,
+            content,
+            userId,
+          },
+          {
+            client: trx,
+          }
+        );
+
+        if (hashTagIds?.length) {
+          await post.useTransaction(trx).related('hashTags').attach(hashTagIds);
+        }
+
+        return post;
+      },
+      {
+        isolationLevel: 'read committed',
+      }
+    );
+
+    return post;
   }
 
   async update({ params, request, auth }: HttpContextContract) {
@@ -52,7 +78,22 @@ export default class PostsController {
     const validatedData = await request.validate(UpdatePostsValidator);
     updatePost.title = validatedData.title;
     updatePost.content = validatedData.content;
-    await updatePost.save();
+
+    await Database.transaction(
+      async (trx: TransactionClientContract) => {
+        await updatePost.useTransaction(trx).save();
+
+        await updatePost.useTransaction(trx).related('hashTags').detach();
+        validatedData?.hashTagIds?.length &&
+          (await updatePost
+            .useTransaction(trx)
+            .related('hashTags')
+            .attach(validatedData.hashTagIds));
+      },
+      {
+        isolationLevel: 'read committed',
+      }
+    );
 
     return {
       success: true,

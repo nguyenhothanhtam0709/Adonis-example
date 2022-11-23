@@ -18,3 +18,14 @@ components:
         updated_at:
           type: string
           format: date-time
+        hashTags:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: number
+              name:
+                type: string
+              key:
+                type: string
