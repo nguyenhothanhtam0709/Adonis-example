@@ -52,4 +52,8 @@ Route.group(() => {
       Route.delete(':id', 'HashTagsController.delete');
     }).middleware(['auth:api']);
   }).prefix('hash-tags');
+
+  Route.group(() => {
+    Route.get('search', 'IndexedPostsController.index').middleware(['auth:api']);
+  }).prefix('indexed-posts');
 }).prefix('api');

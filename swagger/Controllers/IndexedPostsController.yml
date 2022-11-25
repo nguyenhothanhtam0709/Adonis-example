@@ -1,0 +1,51 @@
+/api/indexed-posts/search:
+  get:
+    tags:
+      - Indexed Posts
+    security:
+      - bearerAuth: []
+    description: IndexedPost full-text search
+    parameters:
+      - in: query
+        name: lang
+        schema:
+          type: string
+          enum:
+            - vi
+            - en
+            - ja
+      - in: query
+        name: search
+        schema:
+          type: string
+      - in: query
+        name: pageSize
+        schema:
+          type: number
+      - in: query
+        name: pageIndex
+        schema:
+          type: number
+    produces:
+      - application/json
+    responses:
+      200:
+        description: Success
+        content:
+          application/json:
+            description: Query posts result
+            schema:
+              type: object
+              properties:
+                meta:
+                  $ref: '#/components/schemas/HashTag'
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      title:
+                        type: string
+                      content:
+                        type: string
+                        nullable: true
