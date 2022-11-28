@@ -6,6 +6,7 @@ import Env from '@ioc:Adonis/Core/Env';
 // import Redis from '@ioc:Adonis/Addons/Redis';
 import Bull from '@ioc:Rocketseat/Bull';
 import Job from 'App/Jobs/NewUserRegisterTracking';
+import UserRegisterEmailJob from 'App/Jobs/UserRegisterEmail';
 // import Database from '@ioc:Adonis/Lucid/Database';
 
 export default class AuthController {
@@ -35,6 +36,7 @@ export default class AuthController {
     });
 
     Bull.add(new Job().key, newUser);
+    Bull.add(new UserRegisterEmailJob().key, { email: newUser.email });
 
     return token.toJSON();
   }
