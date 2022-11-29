@@ -1,0 +1,30 @@
+/api/sse/fact:
+  post:
+    tags:
+      - Server Send Events
+    description: add fact
+    requestBody:
+      required: true
+      content:
+        application/json:
+          description: User payload
+          schema:
+            type: object
+            properties:
+              info:
+                type: string
+                example: 'Shark teeth are embedded in the gums rather than directly affixed to the jaw, and are constantly replaced throughout life.'
+                required: true
+              source:
+                type: string
+                example: 'https://en.wikipedia.org/wiki/Shark'
+                required: true
+    produces:
+      - application/json
+    responses:
+      200:
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Post'

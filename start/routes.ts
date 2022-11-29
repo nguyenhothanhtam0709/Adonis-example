@@ -56,4 +56,10 @@ Route.group(() => {
   Route.group(() => {
     Route.get('search', 'IndexedPostsController.index').middleware(['auth:api']);
   }).prefix('indexed-posts');
+
+  Route.group(() => {
+    Route.get('status', 'SSEController.getStatus');
+    Route.get('events', 'SSEController.getEvents'); // sse route
+    Route.post('fact', 'SSEController.addFact');
+  }).prefix('sse');
 }).prefix('api');
