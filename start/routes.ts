@@ -29,6 +29,15 @@ Route.group(() => {
   Route.group(() => {
     Route.post('register', 'AuthController.register');
     Route.post('login', 'AuthController.login');
+
+    Route.group(() => {
+      Route.get('url', 'GoogleAuthsController.getUrl');
+      Route.get('get-token', 'GoogleAuthsController.getToken'); // fallback api for Google
+      Route.post('login', 'GoogleAuthsController.login');
+    })
+      .prefix('google')
+      .namespace('App/Controllers/Http/Auth');
+
     Route.group(() => {
       Route.post('logout', 'AuthController.logout');
       Route.get('profile', 'AuthController.profile');
