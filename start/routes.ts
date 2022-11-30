@@ -43,6 +43,7 @@ Route.group(() => {
 
   Route.group(() => {
     Route.get('my-posts', 'FeedsController.myPosts').middleware(['auth:api']);
+    Route.get('by-hashtags', 'FeedsController.postsByHashtag');
   }).prefix('feeds');
 
   Route.group(() => {
