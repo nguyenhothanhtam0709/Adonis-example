@@ -33,8 +33,8 @@ export default class FeedsController {
       : [];
 
     if (hashtagsArr?.length) {
-      query = query.with('hashTags', (query) => {
-        query.whereIn('hash_tag_id', hashtagsArr);
+      query = query.whereHas('hashTags', (query) => {
+        query.whereInPivot('id', hashtagsArr);
       });
     }
     const posts = await query.paginate(pageIndex, pageSize);
